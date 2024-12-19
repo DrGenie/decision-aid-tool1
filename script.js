@@ -18,46 +18,39 @@ const coefficients = {
     cost_cont: -0.0176963
 };
 
-// Initialize Chart.js
+// Initialize Chart.js with Doughnut Chart for better visualization
 let ctx = document.getElementById('probabilityChart').getContext('2d');
 let probabilityChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'doughnut',
     data: {
-        labels: ['Program Uptake'],
+        labels: ['Uptake Probability', 'Remaining'],
         datasets: [{
-            label: 'Probability',
-            data: [0],
-            backgroundColor: ['rgba(39, 174, 96, 0.6)'], // Default Green
-            borderColor: ['rgba(39, 174, 96, 1)'],
+            data: [0, 1],
+            backgroundColor: ['rgba(39, 174, 96, 0.6)', 'rgba(236, 240, 241, 0.3)'], // Green and Light Gray
+            borderColor: ['rgba(39, 174, 96, 1)', 'rgba(236, 240, 241, 1)'],
             borderWidth: 1
         }]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true,
-                max: 1,
-                ticks: {
-                    callback: function(value) {
-                        return (value * 100) + '%';
-                    },
-                    stepSize: 0.1
-                },
-                title: {
-                    display: true,
-                    text: 'Probability'
-                }
-            }
-        },
         plugins: {
             legend: {
-                display: false
+                position: 'bottom',
+                labels: {
+                    font: {
+                        size: 14
+                    },
+                    color: '#34495e'
+                }
             },
             title: {
                 display: true,
-                text: 'Predicted Probability of Program Uptake'
+                text: 'Predicted Probability of Program Uptake',
+                font: {
+                    size: 18
+                },
+                color: '#2c3e50'
             }
         }
     }
@@ -126,21 +119,22 @@ function calculateProbability() {
     // Display the result with percentage formatting
     document.getElementById('probability').innerText = (P_final * 100).toFixed(2) + '%';
 
+    // Update the chart data
+    probabilityChart.data.datasets[0].data = [P_final, 1 - P_final];
+
     // Update the chart color based on probability
-    let barColor;
-    let borderColor;
     if (P_final < 0.3) {
-        barColor = 'rgba(231, 76, 60, 0.6)'; // Red
-        borderColor = 'rgba(231, 76, 60, 1)';
+        probabilityChart.data.datasets[0].backgroundColor = ['rgba(231, 76, 60, 0.6)', 'rgba(236, 240, 241, 0.3)']; // Red and Light Gray
+        probabilityChart.data.datasets[0].borderColor = ['rgba(231, 76, 60, 1)', 'rgba(236, 240, 241, 1)'];
     } else if (P_final >= 0.3 && P_final < 0.7) {
-        barColor = 'rgba(241, 196, 15, 0.6)'; // Yellow
-        borderColor = 'rgba(241, 196, 15, 1)';
+        probabilityChart.data.datasets[0].backgroundColor = ['rgba(241, 196, 15, 0.6)', 'rgba(236, 240, 241, 0.3)']; // Yellow and Light Gray
+        probabilityChart.data.datasets[0].borderColor = ['rgba(241, 196, 15, 1)', 'rgba(236, 240, 241, 1)'];
     } else {
-        barColor = 'rgba(39, 174, 96, 0.6)'; // Green
-        borderColor = 'rgba(39, 174, 96, 1)';
+        probabilityChart.data.datasets[0].backgroundColor = ['rgba(39, 174, 96, 0.6)', 'rgba(236, 240, 241, 0.3)']; // Green and Light Gray
+        probabilityChart.data.datasets[0].borderColor = ['rgba(39, 174, 96, 1)', 'rgba(236, 240, 241, 1)'];
     }
-    probabilityChart.data.datasets[0].backgroundColor[0] = barColor;
-    probabilityChart.data.datasets[0].borderColor[0] = borderColor;
+
+    // Update the chart
     probabilityChart.update();
 
     // Update Notes Section
