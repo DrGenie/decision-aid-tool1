@@ -73,6 +73,9 @@ function calculateProbability() {
     const mode_hybrid = parseFloat(document.getElementById('mode_hybrid').value);
     const dur_2hrs = parseFloat(document.getElementById('dur_2hrs').value);
     const dur_4hrs = parseFloat(document.getElementById('dur_4hrs').value);
+    const type_comm = parseFloat(document.getElementById('type_comm').value);
+    const type_psych = parseFloat(document.getElementById('type_psych').value);
+    const type_vr = parseFloat(document.getElementById('type_vr').value);
 
     // Validate that both durations are not selected as 'Yes'
     if (dur_2hrs === 1 && dur_4hrs === 1) {
@@ -80,11 +83,17 @@ function calculateProbability() {
         return;
     }
 
+    // Validate that both frequencies are not selected as 'Yes'
+    if (freq_monthly === 1 && freq_weekly === 1) {
+        alert("Please select only one frequency: either Monthly or Weekly.");
+        return;
+    }
+
     // Calculate U_alt1
     let U_alt1 = coefficients.ASC_alt1 +
-                coefficients.type_comm * 0 + // Assuming 'type_comm' not varied in scenarios
-                coefficients.type_psych * 0 + // Assuming 'type_psych' not varied in scenarios
-                coefficients.type_vr * 0 + // Assuming 'type_vr' not varied in scenarios
+                coefficients.type_comm * type_comm +
+                coefficients.type_psych * type_psych +
+                coefficients.type_vr * type_vr +
                 coefficients.mode_virtual * mode_virtual +
                 coefficients.mode_hybrid * mode_hybrid +
                 coefficients.freq_weekly * freq_weekly +
@@ -130,5 +139,24 @@ document.getElementById('dur_4hrs').addEventListener('change', function() {
         document.getElementById('dur_2hrs').disabled = true;
     } else {
         document.getElementById('dur_2hrs').disabled = false;
+    }
+});
+
+// Add event listeners to Frequency fields to enforce selection constraints
+document.getElementById('freq_monthly').addEventListener('change', function() {
+    if (this.value === "1") {
+        document.getElementById('freq_weekly').value = "0";
+        document.getElementById('freq_weekly').disabled = true;
+    } else {
+        document.getElementById('freq_weekly').disabled = false;
+    }
+});
+
+document.getElementById('freq_weekly').addEventListener('change', function() {
+    if (this.value === "1") {
+        document.getElementById('freq_monthly').value = "0";
+        document.getElementById('freq_monthly').disabled = true;
+    } else {
+        document.getElementById('freq_monthly').disabled = false;
     }
 });
