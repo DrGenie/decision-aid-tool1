@@ -158,15 +158,33 @@ function calculateProbability() {
     }
 }
 
-// Function to generate notes based on probability
+// Function to generate notes based on probability and preference estimates
 function generateNotes(probability) {
     let notes = '';
     if (probability < 0.3) {
-        notes = '<p><strong>Recommendation:</strong> Consider enhancing community engagement and increasing accessibility to improve program uptake.</p>';
+        notes = `
+            <p><strong>Recommendation:</strong> The uptake probability is low. Consider enhancing community engagement and increasing accessibility to improve program uptake.</p>
+            <ul>
+                <li>Community Engagement positively influences uptake.</li>
+                <li>Improving accessibility can significantly boost participation.</li>
+            </ul>
+        `;
     } else if (probability >= 0.3 && probability < 0.7) {
-        notes = '<p><strong>Recommendation:</strong> Moderate uptake. Explore opportunities to boost psychological counselling services and virtual reality offerings.</p>';
+        notes = `
+            <p><strong>Recommendation:</strong> The uptake probability is moderate. Explore opportunities to boost psychological counselling services and virtual reality offerings.</p>
+            <ul>
+                <li>Psychological Counselling has a mixed effect; enhancing support can help.</li>
+                <li>Introducing Virtual Reality can attract more participants.</li>
+            </ul>
+        `;
     } else {
-        notes = '<p><strong>Excellent:</strong> High program uptake predicted. Maintain current strategies and continue supporting diverse support programs.</p>';
+        notes = `
+            <p><strong>Excellent:</strong> High program uptake predicted. Maintain current strategies and continue supporting diverse support programs.</p>
+            <ul>
+                <li>Community Engagement and Accessibility are effectively driving participation.</li>
+                <li>Continue offering a variety of support programs to sustain high uptake.</li>
+            </ul>
+        `;
     }
     return notes;
 }
