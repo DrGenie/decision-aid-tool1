@@ -6,6 +6,8 @@
     <title>AussieConnect Plus - Decision Aid Tool</title>
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Chart.js CDN for visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -21,14 +23,14 @@
                 <li>Select your preferences from the drop-down menus provided.</li>
                 <li>Click the <strong>"Calculate Probability"</strong> button to see your results.</li>
                 <li>Review the predicted probability, program package, and insights provided.</li>
-                <li>Download your selected program package for future reference.</li>
+                <li>Download your selected program package and chart for future reference.</li>
             </ol>
             <p>These support programs are essential in fostering community engagement and enhancing the well-being of our senior population.</p>
         </div>
         
         <form id="decisionForm">
             <!-- Cost Continuum -->
-            <label for="cost_cont">Cost Continuum (cost_cont):</label>
+            <label for="cost_cont">Cost Continuum:</label>
             <select id="cost_cont" name="cost_cont">
                 <option value="0">Cost Free (0)</option>
                 <option value="10">Affordable (10)</option>
@@ -40,75 +42,75 @@
             </select>
 
             <!-- Distance Significance -->
-            <label for="dist_signif">Distance Significance (dist_signif):</label>
+            <label for="dist_signif">Distance Significance:</label>
             <select id="dist_signif" name="dist_signif">
                 <option value="0">High Accessibility (0)</option>
                 <option value="1">Low Accessibility (1)</option>
             </select>
 
             <!-- Distance Local -->
-            <label for="dist_local">Distance Local (dist_local):</label>
+            <label for="dist_local">Distance Local:</label>
             <select id="dist_local" name="dist_local">
                 <option value="1">Local Area Accessibility (1)</option>
                 <option value="0">Non-Local Area Accessibility (0)</option>
             </select>
 
             <!-- Frequency Monthly -->
-            <label for="freq_monthly">Frequency Monthly (freq_monthly):</label>
+            <label for="freq_monthly">Frequency Monthly:</label>
             <select id="freq_monthly" name="freq_monthly">
                 <option value="1">Monthly (1)</option>
                 <option value="0">Not Monthly (0)</option>
             </select>
 
             <!-- Frequency Weekly -->
-            <label for="freq_weekly">Frequency Weekly (freq_weekly):</label>
+            <label for="freq_weekly">Frequency Weekly:</label>
             <select id="freq_weekly" name="freq_weekly">
                 <option value="1">Weekly (1)</option>
                 <option value="0">Not Weekly (0)</option>
             </select>
 
             <!-- Mode Virtual -->
-            <label for="mode_virtual">Mode Virtual (mode_virtual):</label>
+            <label for="mode_virtual">Mode Virtual:</label>
             <select id="mode_virtual" name="mode_virtual">
                 <option value="0">In-Person Only (0)</option>
                 <option value="1">Virtual Available (1)</option>
             </select>
 
             <!-- Mode Hybrid -->
-            <label for="mode_hybrid">Mode Hybrid (mode_hybrid):</label>
+            <label for="mode_hybrid">Mode Hybrid:</label>
             <select id="mode_hybrid" name="mode_hybrid">
                 <option value="0">In-Person Only (0)</option>
                 <option value="1">Hybrid Available (1)</option>
             </select>
 
             <!-- Duration 2 Hours -->
-            <label for="dur_2hrs">Duration 2 Hours (dur_2hrs):</label>
+            <label for="dur_2hrs">Duration 2 Hours:</label>
             <select id="dur_2hrs" name="dur_2hrs">
                 <option value="1">Yes (1)</option>
                 <option value="0">No (0)</option>
             </select>
 
             <!-- Duration 4 Hours -->
-            <label for="dur_4hrs">Duration 4 Hours (dur_4hrs):</label>
+            <label for="dur_4hrs">Duration 4 Hours:</label>
             <select id="dur_4hrs" name="dur_4hrs">
                 <option value="1">Yes (1)</option>
                 <option value="0">No (0)</option>
             </select>
 
             <!-- Type of Support Program -->
-            <label for="type_comm">Type of Support Program - Community Engagement (type_comm):</label>
+            <label for="type_comm">Community Engagement:</label>
             <select id="type_comm" name="type_comm">
                 <option value="1">Yes (1)</option>
                 <option value="0">No (0)</option>
             </select>
 
-            <label for="type_psych">Type of Support Program - Psychological Counselling (type_psych):</label>
+            <label for="type_psych">Psychological Counselling:</label>
             <select id="type_psych" name="type_psych">
                 <option value="1">Yes (1)</option>
                 <option value="0">No (0)</option>
             </select>
 
-            <label for="type_vr">Type of Support Program - Virtual Reality (type_vr):</label>
+            <label for="type_vr">Virtual Reality:</label>
             <select id="type_vr" name="type_vr">
                 <option value="1">Yes (1)</option>
                 <option value="0">No (0)</option>
@@ -131,7 +133,8 @@
                 <ul id="packageList">
                     <!-- Selected attributes will be listed here -->
                 </ul>
-                <button id="downloadBtn" onclick="downloadPackage()">Download Program Package</button>
+                <button id="downloadPackageBtn" onclick="downloadPackage()">Download Program Package</button>
+                <button id="downloadChartBtn" onclick="downloadChart()">Download Chart</button>
             </div>
         </div>
 
