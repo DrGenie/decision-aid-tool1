@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Aid Tool</title>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js CDN for visualization (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Decision Aid Tool</h1>
+        <form id="decisionForm">
+            <!-- Cost Continuum -->
+            <label for="cost_cont">Cost Continuum (cost_cont):</label>
+            <select id="cost_cont" name="cost_cont">
+                <option value="10">Affordable (10)</option>
+                <option value="15">Low Cost (15)</option>
+                <option value="20">Medium Cost (20)</option>
+                <option value="25">Moderate Cost (25)</option>
+                <option value="50">High Cost (50)</option>
+                <option value="60">Expensive (60)</option>
+            </select>
+
+            <!-- Distance Significance -->
+            <label for="dist_signif">Distance Significance (dist_signif):</label>
+            <select id="dist_signif" name="dist_signif">
+                <option value="0">High Accessibility (0)</option>
+                <option value="1">Low Accessibility (1)</option>
+            </select>
+
+            <!-- Distance Local -->
+            <label for="dist_local">Distance Local (dist_local):</label>
+            <select id="dist_local" name="dist_local">
+                <option value="1">Local (1)</option>
+                <option value="0">Non-Local (0)</option>
+            </select>
+
+            <!-- Frequency Monthly -->
+            <label for="freq_monthly">Frequency Monthly (freq_monthly):</label>
+            <select id="freq_monthly" name="freq_monthly">
+                <option value="1">Monthly (1)</option>
+                <option value="0">Not Monthly (0)</option>
+            </select>
+
+            <!-- Frequency Weekly -->
+            <label for="freq_weekly">Frequency Weekly (freq_weekly):</label>
+            <select id="freq_weekly" name="freq_weekly">
+                <option value="1">Weekly (1)</option>
+                <option value="0">Not Weekly (0)</option>
+            </select>
+
+            <!-- Mode Virtual -->
+            <label for="mode_virtual">Mode Virtual (mode_virtual):</label>
+            <select id="mode_virtual" name="mode_virtual">
+                <option value="0">In-Person Only (0)</option>
+                <option value="1">Virtual Available (1)</option>
+            </select>
+
+            <!-- Mode Hybrid -->
+            <label for="mode_hybrid">Mode Hybrid (mode_hybrid):</label>
+            <select id="mode_hybrid" name="mode_hybrid">
+                <option value="0">In-Person Only (0)</option>
+                <option value="1">Hybrid Available (1)</option>
+            </select>
+
+            <!-- Duration 2 Hours -->
+            <label for="dur_2hrs">Duration 2 Hours (dur_2hrs):</label>
+            <select id="dur_2hrs" name="dur_2hrs">
+                <option value="1">Yes (1)</option>
+                <option value="0">No (0)</option>
+            </select>
+
+            <!-- Duration 4 Hours -->
+            <label for="dur_4hrs">Duration 4 Hours (dur_4hrs):</label>
+            <select id="dur_4hrs" name="dur_4hrs">
+                <option value="1">Yes (1)</option>
+                <option value="0">No (0)</option>
+            </select>
+
+            <!-- Submit Button -->
+            <button type="button" onclick="calculateProbability()">Calculate Probability</button>
+        </form>
+
+        <!-- Display Predicted Probability -->
+        <div id="result">
+            <h2>Predicted Probability of Choosing Alternative 1: <span id="probability">--</span></h2>
+        </div>
+
+        <!-- Chart Container (Optional) -->
+        <div class="chart-container">
+            <canvas id="probabilityChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
