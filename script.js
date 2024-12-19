@@ -89,6 +89,12 @@ function calculateProbability() {
         return;
     }
 
+    // Validate that both accessibility attributes are not selected as 'Yes'
+    if (dist_local === 1 && dist_signif === 1) {
+        alert("Please select only one accessibility option: either Local Area Accessibility or Low Accessibility.");
+        return;
+    }
+
     // Calculate U_alt1
     let U_alt1 = coefficients.ASC_alt1 +
                 coefficients.type_comm * type_comm +
@@ -119,8 +125,18 @@ function calculateProbability() {
     document.getElementById('probability').innerText = (P_final * 100).toFixed(2) + '%';
 
     // Update the chart color based on probability
-    let barColor = P_final < 0.5 ? 'rgba(231, 76, 60, 0.6)' : 'rgba(39, 174, 96, 0.6)';
-    let borderColor = P_final < 0.5 ? 'rgba(231, 76, 60, 1)' : 'rgba(39, 174, 96, 1)';
+    let barColor;
+    let borderColor;
+    if (P_final < 0.3) {
+        barColor = 'rgba(231, 76, 60, 0.6)'; // Red
+        borderColor = 'rgba(231, 76, 60, 1)';
+    } else if (P_final >= 0.3 && P_final < 0.7) {
+        barColor = 'rgba(241, 196, 15, 0.6)'; // Yellow
+        borderColor = 'rgba(241, 196, 15, 1)';
+    } else {
+        barColor = 'rgba(39, 174, 96, 0.6)'; // Green
+        borderColor = 'rgba(39, 174, 96, 1)';
+    }
     probabilityChart.data.datasets[0].backgroundColor[0] = barColor;
     probabilityChart.data.datasets[0].borderColor[0] = borderColor;
     probabilityChart.update();
@@ -147,7 +163,7 @@ function generateNotes(probability) {
     let notes = '';
     if (probability < 0.3) {
         notes = '<p><strong>Recommendation:</strong> Consider enhancing community engagement and increasing accessibility to improve program uptake.</p>';
-    } else if (probability >= 0.3 && probability < 0.6) {
+    } else if (probability >= 0.3 && probability < 0.7) {
         notes = '<p><strong>Recommendation:</strong> Moderate uptake. Explore opportunities to boost psychological counselling services and virtual reality offerings.</p>';
     } else {
         notes = '<p><strong>Excellent:</strong> High program uptake predicted. Maintain current strategies and continue supporting diverse support programs.</p>';
@@ -162,9 +178,10 @@ function generateProgramPackage() {
     const selects = form.getElementsByTagName('select');
     for (let select of selects) {
         if (select.value === "1") {
-            const label = select.previousElementSibling.innerText;
+            let label = select.previousElementSibling.innerText;
+            label = label.replace('(1)', '').replace('(0)', '').trim();
             const value = select.options[select.selectedIndex].innerText;
-            packageList.push(`${label.replace('(1)', '').replace('(0)', '')}: ${value}`);
+            packageList.push(`${label}: ${value}`);
         }
     }
     // Generate HTML list items
@@ -178,6 +195,10 @@ function generateProgramPackage() {
 // Function to download program package as a text file
 function downloadPackage() {
     const packageList = document.getElementById('packageList').innerText;
+    if (!packageList) {
+        alert("No program package selected to download.");
+        return;
+    }
     const blob = new Blob([packageList], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
