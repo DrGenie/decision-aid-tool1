@@ -33,6 +33,8 @@ let probabilityChart = new Chart(ctx, {
         }]
     },
     options: {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
             y: {
                 beginAtZero: true,
@@ -156,40 +158,31 @@ function calculateProbability() {
     } else {
         downloadBtn.style.display = 'none';
     }
+
+    // Ensure the chart is visible
+    document.querySelector('.chart-container').style.display = 'block';
 }
 
-// Function to generate notes based on probability and preference estimates
+// Function to generate brief notes based on probability and preference estimates
 function generateNotes(probability) {
     let notes = '';
     if (probability < 0.3) {
         notes = `
-            <p><strong>Recommendation:</strong> The uptake probability is low. Consider enhancing community engagement and increasing accessibility to improve program uptake.</p>
-            <ul>
-                <li>Community Engagement positively influences uptake.</li>
-                <li>Improving accessibility can significantly boost participation.</li>
-            </ul>
+            <p><strong>Recommendation:</strong> Low uptake predicted. Enhancing community engagement and accessibility can improve participation.</p>
         `;
     } else if (probability >= 0.3 && probability < 0.7) {
         notes = `
-            <p><strong>Recommendation:</strong> The uptake probability is moderate. Explore opportunities to boost psychological counselling services and virtual reality offerings.</p>
-            <ul>
-                <li>Psychological Counselling has a mixed effect; enhancing support can help.</li>
-                <li>Introducing Virtual Reality can attract more participants.</li>
-            </ul>
+            <p><strong>Recommendation:</strong> Moderate uptake predicted. Boosting psychological counselling and introducing virtual reality can enhance participation.</p>
         `;
     } else {
         notes = `
-            <p><strong>Excellent:</strong> High program uptake predicted. Maintain current strategies and continue supporting diverse support programs.</p>
-            <ul>
-                <li>Community Engagement and Accessibility are effectively driving participation.</li>
-                <li>Continue offering a variety of support programs to sustain high uptake.</li>
-            </ul>
+            <p><strong>Excellent:</strong> High uptake predicted. Continue supporting diverse programs and maintaining strong community engagement.</p>
         `;
     }
     return notes;
 }
 
-// Function to generate program package list
+// Function to generate program package list with user-friendly labels
 function generateProgramPackage() {
     const packageList = [];
     const form = document.getElementById('decisionForm');
@@ -213,7 +206,7 @@ function generateProgramPackage() {
 // Function to download program package as a text file
 function downloadPackage() {
     const packageList = document.getElementById('packageList').innerText;
-    if (!packageList) {
+    if (!packageList.trim()) {
         alert("No program package selected to download.");
         return;
     }
