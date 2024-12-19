@@ -18,17 +18,17 @@ const coefficients = {
     cost_cont: -0.0176963
 };
 
-// Initialize Chart.js (Optional)
+// Initialize Chart.js
 let ctx = document.getElementById('probabilityChart').getContext('2d');
 let probabilityChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Predicted Probability'],
+        labels: ['Program Uptake'],
         datasets: [{
-            label: 'P_alt1',
+            label: 'Probability',
             data: [0],
-            backgroundColor: ['rgba(76, 175, 80, 0.6)'],
-            borderColor: ['rgba(76, 175, 80, 1)'],
+            backgroundColor: ['rgba(39, 174, 96, 0.6)'],
+            borderColor: ['rgba(39, 174, 96, 1)'],
             borderWidth: 1
         }]
     },
@@ -40,7 +40,8 @@ let probabilityChart = new Chart(ctx, {
                 ticks: {
                     callback: function(value) {
                         return (value * 100) + '%';
-                    }
+                    },
+                    stepSize: 0.1
                 },
                 title: {
                     display: true,
@@ -54,7 +55,7 @@ let probabilityChart = new Chart(ctx, {
             },
             title: {
                 display: true,
-                text: 'Predicted Probability of Choosing Alternative 1'
+                text: 'Predicted Probability of Program Uptake'
             }
         }
     }
@@ -72,6 +73,12 @@ function calculateProbability() {
     const mode_hybrid = parseFloat(document.getElementById('mode_hybrid').value);
     const dur_2hrs = parseFloat(document.getElementById('dur_2hrs').value);
     const dur_4hrs = parseFloat(document.getElementById('dur_4hrs').value);
+
+    // Validate that both durations are not selected as 'Yes'
+    if (dur_2hrs === 1 && dur_4hrs === 1) {
+        alert("Please select only one duration: either 2 Hours or 4 Hours.");
+        return;
+    }
 
     // Calculate U_alt1
     let U_alt1 = coefficients.ASC_alt1 +
@@ -102,7 +109,26 @@ function calculateProbability() {
     // Display the result with percentage formatting
     document.getElementById('probability').innerText = (P_final * 100).toFixed(2) + '%';
 
-    // Update the chart (Optional)
+    // Update the chart
     probabilityChart.data.datasets[0].data[0] = P_final;
     probabilityChart.update();
 }
+
+// Add event listeners to Duration fields to enforce selection constraints
+document.getElementById('dur_2hrs').addEventListener('change', function() {
+    if (this.value === "1") {
+        document.getElementById('dur_4hrs').value = "0";
+        document.getElementById('dur_4hrs').disabled = true;
+    } else {
+        document.getElementById('dur_4hrs').disabled = false;
+    }
+});
+
+document.getElementById('dur_4hrs').addEventListener('change', function() {
+    if (this.value === "1") {
+        document.getElementById('dur_2hrs').value = "0";
+        document.getElementById('dur_2hrs').disabled = true;
+    } else {
+        document.getElementById('dur_2hrs').disabled = false;
+    }
+});
