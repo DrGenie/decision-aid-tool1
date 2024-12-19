@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AussieConnect - Decision Aid Tool</title>
+    <title>AussieConnect Plus - Decision Aid Tool</title>
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="styles.css">
     <!-- Chart.js CDN for visualization -->
@@ -11,12 +11,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>AussieConnect Decision Aid Tool</h1>
+        <h1>AussieConnect Plus Decision Aid Tool</h1>
         
         <!-- Instructions Section -->
         <div class="instructions">
             <h2>How to Use This Tool</h2>
-            <p>Welcome to AussieConnect! This tool is designed to help you assess the likelihood of program uptake aimed at reducing loneliness among older adults in Australia. Follow the steps below to get your predicted probability:</p>
+            <p>Welcome to AussieConnect Plus! This tool is designed to help you assess the likelihood of program uptake aimed at reducing loneliness among older adults in Australia. Follow the steps below to get your predicted probability:</p>
             <ol>
                 <li>Select your preferences from the drop-down menus provided.</li>
                 <li>Click the <strong>"Calculate Probability"</strong> button to see your results.</li>
@@ -89,6 +89,25 @@
             <!-- Duration 4 Hours -->
             <label for="dur_4hrs">Duration 4 Hours (dur_4hrs):</label>
             <select id="dur_4hrs" name="dur_4hrs">
+                <option value="1">Yes (1)</option>
+                <option value="0">No (0)</option>
+            </select>
+
+            <!-- Type of Support Program -->
+            <label for="type_comm">Type of Support Program - Community Engagement (type_comm):</label>
+            <select id="type_comm" name="type_comm">
+                <option value="1">Yes (1)</option>
+                <option value="0">No (0)</option>
+            </select>
+
+            <label for="type_psych">Type of Support Program - Psychological Counselling (type_psych):</label>
+            <select id="type_psych" name="type_psych">
+                <option value="1">Yes (1)</option>
+                <option value="0">No (0)</option>
+            </select>
+
+            <label for="type_vr">Type of Support Program - Virtual Reality (type_vr):</label>
+            <select id="type_vr" name="type_vr">
                 <option value="1">Yes (1)</option>
                 <option value="0">No (0)</option>
             </select>
