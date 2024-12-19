@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Aid Tool</title>
+    <title>AussieConnect - Decision Aid Tool</title>
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="styles.css">
-    <!-- Chart.js CDN for visualization (optional) -->
+    <!-- Chart.js CDN for visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Online Decision Aid Tool</h1>
+        <h1>AussieConnect Decision Aid Tool</h1>
+        
+        <!-- Instructions Section -->
+        <div class="instructions">
+            <h2>How to Use This Tool</h2>
+            <p>Welcome to AussieConnect! This tool is designed to help you assess the likelihood of program uptake aimed at reducing loneliness among older adults in Australia. Follow the steps below to get your predicted probability:</p>
+            <ol>
+                <li>Select your preferences from the drop-down menus provided.</li>
+                <li>Click the <strong>"Calculate Probability"</strong> button to see your results.</li>
+                <li>Review the predicted probability and visualize the data using the chart.</li>
+            </ol>
+            <p>These support programs are essential in fostering community engagement and enhancing the well-being of our senior population.</p>
+        </div>
+        
         <form id="decisionForm">
             <!-- Cost Continuum -->
             <label for="cost_cont">Cost Continuum (cost_cont):</label>
@@ -86,10 +99,10 @@
 
         <!-- Display Predicted Probability -->
         <div id="result">
-            <h2>Predicted Probability of Choosing Alternative 1: <span id="probability">--</span></h2>
+            <h2>Predicted Probability of Program Uptake: <span id="probability">--</span></h2>
         </div>
 
-        <!-- Chart Container (Optional) -->
+        <!-- Chart Container -->
         <div class="chart-container">
             <canvas id="probabilityChart"></canvas>
         </div>
