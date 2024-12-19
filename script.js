@@ -118,9 +118,73 @@ function calculateProbability() {
     // Display the result with percentage formatting
     document.getElementById('probability').innerText = (P_final * 100).toFixed(2) + '%';
 
-    // Update the chart
-    probabilityChart.data.datasets[0].data[0] = P_final;
+    // Update the chart color based on probability
+    let barColor = P_final < 0.5 ? 'rgba(231, 76, 60, 0.6)' : 'rgba(39, 174, 96, 0.6)';
+    let borderColor = P_final < 0.5 ? 'rgba(231, 76, 60, 1)' : 'rgba(39, 174, 96, 1)';
+    probabilityChart.data.datasets[0].backgroundColor[0] = barColor;
+    probabilityChart.data.datasets[0].borderColor[0] = borderColor;
     probabilityChart.update();
+
+    // Update Notes Section
+    const notesDiv = document.getElementById('notes');
+    notesDiv.innerHTML = generateNotes(P_final);
+
+    // Update Program Package Display
+    const packageList = document.getElementById('packageList');
+    packageList.innerHTML = generateProgramPackage();
+
+    // Show or hide download button based on package selection
+    const downloadBtn = document.getElementById('downloadBtn');
+    if (packageList.children.length > 0) {
+        downloadBtn.style.display = 'inline-block';
+    } else {
+        downloadBtn.style.display = 'none';
+    }
+}
+
+// Function to generate notes based on probability
+function generateNotes(probability) {
+    let notes = '';
+    if (probability < 0.3) {
+        notes = '<p><strong>Recommendation:</strong> Consider enhancing community engagement and increasing accessibility to improve program uptake.</p>';
+    } else if (probability >= 0.3 && probability < 0.6) {
+        notes = '<p><strong>Recommendation:</strong> Moderate uptake. Explore opportunities to boost psychological counselling services and virtual reality offerings.</p>';
+    } else {
+        notes = '<p><strong>Excellent:</strong> High program uptake predicted. Maintain current strategies and continue supporting diverse support programs.</p>';
+    }
+    return notes;
+}
+
+// Function to generate program package list
+function generateProgramPackage() {
+    const packageList = [];
+    const form = document.getElementById('decisionForm');
+    const selects = form.getElementsByTagName('select');
+    for (let select of selects) {
+        if (select.value === "1") {
+            const label = select.previousElementSibling.innerText;
+            const value = select.options[select.selectedIndex].innerText;
+            packageList.push(`${label.replace('(1)', '').replace('(0)', '')}: ${value}`);
+        }
+    }
+    // Generate HTML list items
+    let listItems = '';
+    packageList.forEach(item => {
+        listItems += `<li>${item}</li>`;
+    });
+    return listItems;
+}
+
+// Function to download program package as a text file
+function downloadPackage() {
+    const packageList = document.getElementById('packageList').innerText;
+    const blob = new Blob([packageList], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Program_Package.txt';
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
 // Add event listeners to Duration fields to enforce selection constraints
@@ -158,5 +222,24 @@ document.getElementById('freq_weekly').addEventListener('change', function() {
         document.getElementById('freq_monthly').disabled = true;
     } else {
         document.getElementById('freq_monthly').disabled = false;
+    }
+});
+
+// Add event listeners to Accessibility fields to enforce mutual exclusivity
+document.getElementById('dist_local').addEventListener('change', function() {
+    if (this.value === "1") {
+        document.getElementById('dist_signif').value = "0";
+        document.getElementById('dist_signif').disabled = true;
+    } else {
+        document.getElementById('dist_signif').disabled = false;
+    }
+});
+
+document.getElementById('dist_signif').addEventListener('change', function() {
+    if (this.value === "1") {
+        document.getElementById('dist_local').value = "0";
+        document.getElementById('dist_local').disabled = true;
+    } else {
+        document.getElementById('dist_local').disabled = false;
     }
 });
