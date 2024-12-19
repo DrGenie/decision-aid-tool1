@@ -27,7 +27,7 @@ let probabilityChart = new Chart(ctx, {
         datasets: [{
             label: 'Probability',
             data: [0],
-            backgroundColor: ['rgba(39, 174, 96, 0.6)'],
+            backgroundColor: ['rgba(39, 174, 96, 0.6)'], // Default Green
             borderColor: ['rgba(39, 174, 96, 1)'],
             borderWidth: 1
         }]
@@ -151,12 +151,15 @@ function calculateProbability() {
     const packageList = document.getElementById('packageList');
     packageList.innerHTML = generateProgramPackage();
 
-    // Show or hide download button based on package selection
-    const downloadBtn = document.getElementById('downloadBtn');
+    // Show or hide download buttons based on package selection
+    const downloadPackageBtn = document.getElementById('downloadPackageBtn');
+    const downloadChartBtn = document.getElementById('downloadChartBtn');
     if (packageList.children.length > 0) {
-        downloadBtn.style.display = 'inline-block';
+        downloadPackageBtn.style.display = 'inline-block';
+        downloadChartBtn.style.display = 'inline-block';
     } else {
-        downloadBtn.style.display = 'none';
+        downloadPackageBtn.style.display = 'none';
+        downloadChartBtn.style.display = 'none';
     }
 
     // Ensure the chart is visible
@@ -190,7 +193,7 @@ function generateProgramPackage() {
     for (let select of selects) {
         if (select.value === "1") {
             let label = select.previousElementSibling.innerText;
-            label = label.replace('(1)', '').replace('(0)', '').trim();
+            label = label.replace(':', '').trim();
             const value = select.options[select.selectedIndex].innerText;
             packageList.push(`${label}: ${value}`);
         }
@@ -217,6 +220,15 @@ function downloadPackage() {
     a.download = 'Program_Package.txt';
     a.click();
     URL.revokeObjectURL(url);
+}
+
+// Function to download the chart as an image
+function downloadChart() {
+    const canvas = document.getElementById('probabilityChart');
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = 'Uptake_Probability_Chart.png';
+    link.click();
 }
 
 // Add event listeners to Duration fields to enforce selection constraints
