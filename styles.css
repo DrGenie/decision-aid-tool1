@@ -9,7 +9,7 @@ body {
 
 .container {
     width: 95%;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 50px auto;
     background-color: #ffffff;
     padding: 30px 50px 50px 50px;
@@ -86,6 +86,43 @@ button:hover {
 #probability {
     color: #27ae60;
     font-weight: bold;
+    font-size: 1.5em;
+}
+
+#notes {
+    margin-top: 20px;
+    font-size: 1.1em;
+    color: #34495e;
+}
+
+#programPackage {
+    margin-top: 30px;
+    text-align: left;
+}
+
+#programPackage h3 {
+    color: #2980b9;
+}
+
+#packageList {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+#downloadBtn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#downloadBtn:hover {
+    background-color: #1f6391;
 }
 
 .chart-container {
