@@ -179,7 +179,7 @@ function calculateProbability() {
     // Update the Uptake Probability chart
     probabilityChart.update();
 
-    // Update Notes Section
+    // Update Notes Section with Brief Interpretations
     const notesDiv = document.getElementById('notes');
     notesDiv.innerHTML = generateNotes(P_final);
 
@@ -188,8 +188,8 @@ function calculateProbability() {
     packageList.innerHTML = generateProgramPackage();
 
     // Update WTP Table and Chart
-    const wtpTableBody = document.querySelector('#wtpTable tbody');
     const wtpData = calculateWTP();
+    const wtpTableBody = document.querySelector('#wtpTable tbody');
     wtpTableBody.innerHTML = generateWTPTable(wtpData);
     updateWTPChart(wtpData);
 
@@ -197,17 +197,14 @@ function calculateProbability() {
     const downloadPackageBtn = document.getElementById('downloadPackageBtn');
     const downloadChartBtn = document.getElementById('downloadChartBtn');
     const downloadWtpBtn = document.getElementById('downloadWtpBtn');
-    const downloadNotesBtn = document.getElementById('downloadNotesBtn');
     if (packageList.children.length > 0) {
         downloadPackageBtn.style.display = 'inline-block';
         downloadChartBtn.style.display = 'inline-block';
         downloadWtpBtn.style.display = 'inline-block';
-        downloadNotesBtn.style.display = 'inline-block';
     } else {
         downloadPackageBtn.style.display = 'none';
         downloadChartBtn.style.display = 'none';
         downloadWtpBtn.style.display = 'none';
-        downloadNotesBtn.style.display = 'none';
     }
 
     // Ensure the charts are visible
@@ -374,43 +371,6 @@ function downloadWTP() {
     a.click();
 }
 
-// Function to download WTP notes as a text file
-function downloadNotes() {
-    // Fetch WTP values from the table
-    const wtpRows = document.querySelectorAll('#wtpTable tbody tr');
-    let wtpValues = {};
-    wtpRows.forEach(row => {
-        const feature = row.cells[0].innerText;
-        const wtp = parseFloat(row.cells[1].innerText);
-        wtpValues[feature] = wtp;
-    });
-
-    // Extract specific WTP values
-    const commWTP = wtpValues["Community Engagement"] || 0;
-    const psychWTP = wtpValues["Psychological Counselling"] || 0;
-    const vrWTP = wtpValues["Virtual Reality"] || 0;
-
-    // Construct the notes with actual WTP values
-    let notes = `
-Willingness-to-Pay (WTP) Analysis:
-
-Willingness-to-Pay (WTP) is calculated as the negative ratio of the attribute coefficient to the cost coefficient. It represents the monetary value participants assign to changes in support program features.
-
-For instance, the WTP for Community Engagement compared to the baseline (peer-support) was approximately AUD ${commWTP.toFixed(2)}, which means that participants on average are willing to pay AUD ${commWTP.toFixed(2)} more per session compared to the baseline peer support programs. This indicates a strong preference for programs that facilitate structured social interactions within the community, suggesting the importance of strengthening community ties and providing diverse social opportunities for older adults.
-
-In contrast, Psychological Counselling and Virtual Reality (VR) programs elicited negative WTP estimates of AUD ${psychWTP.toFixed(2)} and AUD ${vrWTP.toFixed(2)}, respectively. These negative values suggest that participants perceive Psychological Counselling as less desirable than peer support, potentially due to stigma or perceived effectiveness. The significantly negative valuation of VR programs may reflect discomfort with technology, perceived lack of personal interaction, or skepticism about the efficacy of virtual interventions in mitigating loneliness.
-    `;
-
-    // Create a blob from the notes
-    const blob = new Blob([notes], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'WTP_Notes.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
 // Add event listeners to Duration fields to enforce selection constraints
 document.getElementById('dur_2hrs').addEventListener('change', function() {
     if (this.value === "1") {
@@ -466,7 +426,7 @@ document.getElementById('dist_signif').addEventListener('change', function() {
     } else {
         document.getElementById('dist_local').disabled = false;
     }
-});
+}
 // Add to script.js
 document.getElementById('feedbackForm').addEventListener('submit', function(event) {
     event.preventDefault();
