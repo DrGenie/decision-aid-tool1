@@ -358,3 +358,16 @@ document.getElementById('dist_signif').addEventListener('change', function() {
         document.getElementById('dist_local').disabled = false;
     }
 });
+// Add to script.js
+document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const feedback = document.getElementById('feedback').value.trim();
+    if (feedback) {
+        // For demonstration, we'll just alert the feedback. 
+        // In a real application, you'd send this to a server.
+        alert("Thank you for your feedback!");
+        document.getElementById('feedbackForm').reset();
+    } else {
+        alert("Please enter your feedback before submitting.");
+    }
+});
