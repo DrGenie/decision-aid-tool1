@@ -145,15 +145,22 @@ function calculateProbability() {
     const packageList = document.getElementById('packageList');
     packageList.innerHTML = generateProgramPackage();
 
+    // Update WTP Table
+    const wtpTableBody = document.querySelector('#wtpTable tbody');
+    wtpTableBody.innerHTML = generateWTPTable();
+
     // Show or hide download buttons based on package selection
     const downloadPackageBtn = document.getElementById('downloadPackageBtn');
     const downloadChartBtn = document.getElementById('downloadChartBtn');
+    const downloadWtpBtn = document.getElementById('downloadWtpBtn');
     if (packageList.children.length > 0) {
         downloadPackageBtn.style.display = 'inline-block';
         downloadChartBtn.style.display = 'inline-block';
+        downloadWtpBtn.style.display = 'inline-block';
     } else {
         downloadPackageBtn.style.display = 'none';
         downloadChartBtn.style.display = 'none';
+        downloadWtpBtn.style.display = 'none';
     }
 
     // Ensure the chart is visible
@@ -200,6 +207,52 @@ function generateProgramPackage() {
     return listItems;
 }
 
+// Function to generate WTP table rows
+function generateWTPTable() {
+    const wtpList = calculateWTP();
+    let tableRows = '';
+    for (let feature in wtpList) {
+        tableRows += `
+            <tr>
+                <td>${feature}</td>
+                <td>${wtpList[feature].toFixed(2)}</td>
+            </tr>
+        `;
+    }
+    return tableRows;
+}
+
+// Function to calculate WTP for each non-cost attribute
+function calculateWTP() {
+    const wtp = {};
+    const costCoefficient = Math.abs(coefficients.cost_cont);
+    
+    // List of non-cost attributes
+    const attributes = {
+        "Community Engagement": coefficients.type_comm,
+        "Psychological Counselling": coefficients.type_psych,
+        "Virtual Reality": coefficients.type_vr,
+        "Virtual Mode": coefficients.mode_virtual,
+        "Hybrid Mode": coefficients.mode_hybrid,
+        "Weekly Frequency": coefficients.freq_weekly,
+        "Monthly Frequency": coefficients.freq_monthly,
+        "Duration 2 Hours": coefficients.dur_2hrs,
+        "Duration 4 Hours": coefficients.dur_4hrs,
+        "Local Area Accessibility": coefficients.dist_local,
+        "Low Accessibility": coefficients.dist_signif
+    };
+
+    for (let feature in attributes) {
+        const coef = attributes[feature];
+        // Only calculate WTP for attributes with non-zero coefficients
+        if (coef !== 0) {
+            wtp[feature] = coef / costCoefficient;
+        }
+    }
+
+    return wtp;
+}
+
 // Function to download program package as a text file
 function downloadPackage() {
     const packageList = document.getElementById('packageList').innerText;
@@ -223,6 +276,30 @@ function downloadChart() {
     link.href = canvas.toDataURL('image/png');
     link.download = 'Uptake_Probability_Chart.png';
     link.click();
+}
+
+// Function to download WTP table as a CSV file
+function downloadWTP() {
+    const table = document.getElementById('wtpTable');
+    let csvContent = "data:text/csv;charset=utf-8,Program Feature,WTP (AUD)\n";
+    for (let row of table.rows) {
+        const rowData = [];
+        for (let cell of row.cells) {
+            // Escape double quotes in cell data
+            let cellText = cell.innerText.replace(/"/g, '""');
+            // Wrap cell data in double quotes if it contains commas
+            if (cellText.includes(',')) {
+                cellText = `"${cellText}"`;
+            }
+            rowData.push(cellText);
+        }
+        csvContent += rowData.join(",") + "\n";
+    }
+    const encodedUri = encodeURI(csvContent);
+    const a = document.createElement('a');
+    a.href = encodedUri;
+    a.download = 'WTP_Table.csv';
+    a.click();
 }
 
 // Add event listeners to Duration fields to enforce selection constraints
