@@ -118,7 +118,7 @@ button:hover {
     color: #34495e;
 }
 
-#downloadPackageBtn, #downloadChartBtn {
+#downloadPackageBtn, #downloadChartBtn, #downloadWtpBtn {
     margin-top: 15px;
     padding: 10px 18px;
     background-color: #2980b9;
@@ -131,9 +131,41 @@ button:hover {
     margin-right: 10px;
 }
 
-#downloadPackageBtn:hover, #downloadChartBtn:hover {
+#downloadPackageBtn:hover, #downloadChartBtn:hover, #downloadWtpBtn:hover {
     background-color: #1f6391;
     transform: translateY(-2px);
+}
+
+/* WTP Section Styling */
+#wtpSection {
+    margin-top: 40px;
+    text-align: left;
+}
+
+#wtpSection h3 {
+    color: #2980b9;
+    margin-bottom: 15px;
+}
+
+#wtpTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+#wtpTable th, #wtpTable td {
+    border: 1px solid #bdc3c7;
+    padding: 10px;
+    text-align: left;
+}
+
+#wtpTable th {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+#wtpTable tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 .chart-container {
@@ -145,44 +177,6 @@ button:hover {
     border: 2px solid #bdc3c7;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-/* Add to styles.css */
-.feedback {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #bdc3c7;
-    border-radius: 6px;
-}
-
-.feedback h3 {
-    color: #2980b9;
-    margin-bottom: 15px;
-}
-
-.feedback textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
-    resize: vertical;
-    font-size: 1em;
-}
-
-.feedback button {
-    margin-top: 10px;
-    background-color: #2980b9;
-    color: #ffffff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.feedback button:hover {
-    background-color: #1f6391;
 }
 
 footer {
