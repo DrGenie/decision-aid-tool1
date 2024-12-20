@@ -9,7 +9,7 @@ body {
 
 .container {
     width: 95%;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 50px auto;
     background-color: #ffffff;
     padding: 40px 60px;
@@ -101,24 +101,45 @@ button:hover {
     color: #2c3e50;
 }
 
-#programPackage {
+#programPackage, #wtpSection {
     margin-top: 30px;
     text-align: left;
 }
 
-#programPackage h3 {
+#programPackage h3, #wtpSection h3 {
     color: #2980b9;
     margin-bottom: 15px;
 }
 
-#packageList {
+#packageList, #wtpTable tbody {
     list-style-type: disc;
     margin-left: 25px;
     font-size: 1em;
     color: #34495e;
 }
 
-#downloadPackageBtn, #downloadChartBtn, #downloadWtpBtn {
+#wtpTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+#wtpTable th, #wtpTable td {
+    border: 1px solid #bdc3c7;
+    padding: 10px;
+    text-align: left;
+}
+
+#wtpTable th {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+#wtpTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#downloadPackageBtn, #downloadChartBtn, #downloadWtpBtn, #downloadNotesBtn {
     margin-top: 15px;
     padding: 10px 18px;
     background-color: #2980b9;
@@ -131,7 +152,7 @@ button:hover {
     margin-right: 10px;
 }
 
-#downloadPackageBtn:hover, #downloadChartBtn:hover, #downloadWtpBtn:hover {
+#downloadPackageBtn:hover, #downloadChartBtn:hover, #downloadWtpBtn:hover, #downloadNotesBtn:hover {
     background-color: #1f6391;
     transform: translateY(-2px);
 }
@@ -145,6 +166,11 @@ button:hover {
 #wtpSection h3 {
     color: #2980b9;
     margin-bottom: 15px;
+}
+
+#wtpChart {
+    max-width: 600px;
+    margin: 0 auto 20px auto;
 }
 
 #wtpTable {
@@ -179,6 +205,15 @@ button:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #3498db;
+    color: #ffffff;
+    font-size: 1.1em;
+    border-radius: 0 0 12px 12px;
+}
 /* Add to styles.css */
 .feedback {
     margin-top: 40px;
@@ -215,14 +250,4 @@ button:hover {
 
 .feedback button:hover {
     background-color: #1f6391;
-}
-
-footer {
-    text-align: center;
-    margin-top: 60px;
-    padding: 20px;
-    background-color: #3498db;
-    color: #ffffff;
-    font-size: 1.1em;
-    border-radius: 0 0 12px 12px;
 }
