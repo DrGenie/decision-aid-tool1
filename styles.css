@@ -179,6 +179,44 @@ button:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Add to styles.css */
+.feedback {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+}
+
+.feedback h3 {
+    color: #2980b9;
+    margin-bottom: 15px;
+}
+
+.feedback textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 1em;
+}
+
+.feedback button {
+    margin-top: 10px;
+    background-color: #2980b9;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.feedback button:hover {
+    background-color: #1f6391;
+}
+
 footer {
     text-align: center;
     margin-top: 60px;
