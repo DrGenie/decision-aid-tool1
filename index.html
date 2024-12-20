@@ -136,6 +136,22 @@
                 <button id="downloadPackageBtn" onclick="downloadPackage()">Download Program Package</button>
                 <button id="downloadChartBtn" onclick="downloadChart()">Download Chart</button>
             </div>
+            <!-- WTP Section -->
+            <div id="wtpSection">
+                <h3>Willingness To Pay (WTP) for Program Features:</h3>
+                <table id="wtpTable">
+                    <thead>
+                        <tr>
+                            <th>Program Feature</th>
+                            <th>WTP (AUD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- WTP values will be populated here -->
+                    </tbody>
+                </table>
+                <button id="downloadWtpBtn" onclick="downloadWTP()">Download WTP Table</button>
+            </div>
         </div>
 
         <!-- Chart Container -->
@@ -148,15 +164,6 @@
     <footer>
         <p>by Mesfin Genie, The University of Newcastle, Australia</p>
     </footer>
-<!-- Add below the form or in the footer -->
-<div class="feedback">
-    <h3>Feedback</h3>
-    <form id="feedbackForm">
-        <label for="feedback">Your Feedback:</label>
-        <textarea id="feedback" name="feedback" rows="4" placeholder="Enter your feedback here..."></textarea>
-        <button type="submit">Submit Feedback</button>
-    </form>
-</div>
 
     <!-- Link to external JavaScript -->
     <script src="script.js"></script>
