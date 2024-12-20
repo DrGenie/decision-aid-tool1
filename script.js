@@ -198,12 +198,18 @@ function generateProgramPackage() {
 
 // Function to download program package as a text file
 function downloadPackage() {
-    const packageList = document.getElementById('packageList').innerText;
-    if (!packageList.trim()) {
+    const packageList = document.getElementById('packageList');
+    if (packageList.children.length === 0) {
         alert("No program package selected to download.");
         return;
     }
-    const blob = new Blob([packageList], { type: 'text/plain' });
+
+    let packageText = '';
+    for (let li of packageList.children) {
+        packageText += li.innerText + '\n';
+    }
+
+    const blob = new Blob([packageText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -290,4 +296,4 @@ document.getElementById('feedbackForm').addEventListener('submit', function(even
     } else {
         alert("Please enter your feedback before submitting.");
     }
-}
+});
