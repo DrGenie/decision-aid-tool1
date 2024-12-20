@@ -18,7 +18,7 @@ const coefficients = {
     cost_cont: -0.0176963
 };
 
-// Initialize Chart.js with Doughnut Chart for better visualization
+// Initialize Chart.js with Doughnut Chart for Uptake Probability
 let ctx = document.getElementById('probabilityChart').getContext('2d');
 let probabilityChart = new Chart(ctx, {
     type: 'doughnut',
@@ -56,7 +56,49 @@ let probabilityChart = new Chart(ctx, {
     }
 });
 
-// Function to calculate predicted probability and update the chart
+// Initialize Chart.js with Bar Chart for WTP
+let wtpCtx = document.getElementById('wtpChart').getContext('2d');
+let wtpChart = new Chart(wtpCtx, {
+    type: 'bar',
+    data: {
+        labels: [], // Program Features
+        datasets: [{
+            label: 'WTP (AUD)',
+            data: [],
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'WTP (AUD)'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            title: {
+                display: true,
+                text: 'Willingness To Pay (WTP) for Program Features',
+                font: {
+                    size: 18
+                },
+                color: '#2c3e50'
+            }
+        }
+    }
+});
+
+// Function to calculate predicted probability and update the charts and tables
 function calculateProbability() {
     // Get values from the form
     const cost_cont = parseFloat(document.getElementById('cost_cont').value);
@@ -119,10 +161,10 @@ function calculateProbability() {
     // Display the result with percentage formatting
     document.getElementById('probability').innerText = (P_final * 100).toFixed(2) + '%';
 
-    // Update the chart data
+    // Update the Uptake Probability chart
     probabilityChart.data.datasets[0].data = [P_final, 1 - P_final];
 
-    // Update the chart color based on probability
+    // Update the Uptake Probability chart color based on probability
     if (P_final < 0.3) {
         probabilityChart.data.datasets[0].backgroundColor = ['rgba(231, 76, 60, 0.6)', 'rgba(236, 240, 241, 0.3)']; // Red and Light Gray
         probabilityChart.data.datasets[0].borderColor = ['rgba(231, 76, 60, 1)', 'rgba(236, 240, 241, 1)'];
@@ -134,7 +176,7 @@ function calculateProbability() {
         probabilityChart.data.datasets[0].borderColor = ['rgba(39, 174, 96, 1)', 'rgba(236, 240, 241, 1)'];
     }
 
-    // Update the chart
+    // Update the Uptake Probability chart
     probabilityChart.update();
 
     // Update Notes Section
@@ -145,44 +187,57 @@ function calculateProbability() {
     const packageList = document.getElementById('packageList');
     packageList.innerHTML = generateProgramPackage();
 
-    // Update WTP Table
+    // Update WTP Table and Chart
     const wtpTableBody = document.querySelector('#wtpTable tbody');
-    wtpTableBody.innerHTML = generateWTPTable();
+    const wtpData = calculateWTP();
+    wtpTableBody.innerHTML = generateWTPTable(wtpData);
+    updateWTPChart(wtpData);
 
     // Show or hide download buttons based on package selection
     const downloadPackageBtn = document.getElementById('downloadPackageBtn');
     const downloadChartBtn = document.getElementById('downloadChartBtn');
     const downloadWtpBtn = document.getElementById('downloadWtpBtn');
+    const downloadNotesBtn = document.getElementById('downloadNotesBtn');
     if (packageList.children.length > 0) {
         downloadPackageBtn.style.display = 'inline-block';
         downloadChartBtn.style.display = 'inline-block';
         downloadWtpBtn.style.display = 'inline-block';
+        downloadNotesBtn.style.display = 'inline-block';
     } else {
         downloadPackageBtn.style.display = 'none';
         downloadChartBtn.style.display = 'none';
         downloadWtpBtn.style.display = 'none';
+        downloadNotesBtn.style.display = 'none';
     }
 
-    // Ensure the chart is visible
+    // Ensure the charts are visible
     document.querySelector('.chart-container').style.display = 'block';
+    document.getElementById('wtpSection').style.display = 'block';
 }
 
 // Function to generate brief notes based on probability and preference estimates
 function generateNotes(probability) {
-    let notes = '';
-    if (probability < 0.3) {
-        notes = `
-            <p><strong>Recommendation:</strong> Low uptake predicted. Enhancing community engagement and accessibility can improve participation.</p>
-        `;
-    } else if (probability >= 0.3 && probability < 0.7) {
-        notes = `
-            <p><strong>Recommendation:</strong> Moderate uptake predicted. Boosting psychological counselling and introducing virtual reality can enhance participation.</p>
-        `;
-    } else {
-        notes = `
-            <p><strong>Excellent:</strong> High uptake predicted. Continue supporting diverse programs and maintaining strong community engagement.</p>
-        `;
-    }
+    // Fetch WTP values from the table
+    const wtpRows = document.querySelectorAll('#wtpTable tbody tr');
+    let wtpValues = {};
+    wtpRows.forEach(row => {
+        const feature = row.cells[0].innerText;
+        const wtp = parseFloat(row.cells[1].innerText);
+        wtpValues[feature] = wtp;
+    });
+
+    // Extract specific WTP values
+    const commWTP = wtpValues["Community Engagement"] || 0;
+    const psychWTP = wtpValues["Psychological Counselling"] || 0;
+    const vrWTP = wtpValues["Virtual Reality"] || 0;
+
+    // Construct the notes with actual WTP values
+    let notes = `
+        <p><strong>Willingness-to-Pay (WTP) Analysis:</strong></p>
+        <p>Willingness-to-Pay (WTP) is calculated as the negative ratio of the attribute coefficient to the cost coefficient. It represents the monetary value participants assign to changes in support program features.</p>
+        <p>For instance, the WTP for Community Engagement compared to the baseline (peer-support) was approximately AUD ${commWTP.toFixed(2)}, which means that participants on average are willing to pay AUD ${commWTP.toFixed(2)} more per session compared to the baseline peer support programs. This indicates a strong preference for programs that facilitate structured social interactions within the community, suggesting the importance of strengthening community ties and providing diverse social opportunities for older adults.</p>
+        <p>In contrast, Psychological Counselling and Virtual Reality (VR) programs elicited negative WTP estimates of AUD ${psychWTP.toFixed(2)} and AUD ${vrWTP.toFixed(2)}, respectively. These negative values suggest that participants perceive Psychological Counselling as less desirable than peer support, potentially due to stigma or perceived effectiveness. The significantly negative valuation of VR programs may reflect discomfort with technology, perceived lack of personal interaction, or skepticism about the efficacy of virtual interventions in mitigating loneliness.</p>
+    `;
     return notes;
 }
 
@@ -207,26 +262,11 @@ function generateProgramPackage() {
     return listItems;
 }
 
-// Function to generate WTP table rows
-function generateWTPTable() {
-    const wtpList = calculateWTP();
-    let tableRows = '';
-    for (let feature in wtpList) {
-        tableRows += `
-            <tr>
-                <td>${feature}</td>
-                <td>${wtpList[feature].toFixed(2)}</td>
-            </tr>
-        `;
-    }
-    return tableRows;
-}
-
 // Function to calculate WTP for each non-cost attribute
 function calculateWTP() {
     const wtp = {};
     const costCoefficient = Math.abs(coefficients.cost_cont);
-    
+
     // List of non-cost attributes
     const attributes = {
         "Community Engagement": coefficients.type_comm,
@@ -253,6 +293,38 @@ function calculateWTP() {
     return wtp;
 }
 
+// Function to generate WTP table rows
+function generateWTPTable(wtpData) {
+    let tableRows = '';
+    for (let feature in wtpData) {
+        tableRows += `
+            <tr>
+                <td>${feature}</td>
+                <td>${wtpData[feature].toFixed(2)}</td>
+            </tr>
+        `;
+    }
+    return tableRows;
+}
+
+// Function to update the WTP chart
+function updateWTPChart(wtpData) {
+    // Extract features and their WTP values
+    const features = Object.keys(wtpData);
+    const wtpValues = Object.values(wtpData);
+    
+    // Determine bar colors based on positive or negative WTP
+    const barColors = wtpValues.map(value => value >= 0 ? 'rgba(46, 204, 113, 0.6)' : 'rgba(231, 76, 60, 0.6)');
+    const borderColors = wtpValues.map(value => value >= 0 ? 'rgba(46, 204, 113, 1)' : 'rgba(231, 76, 60, 1)');
+
+    // Update WTP Chart data
+    wtpChart.data.labels = features;
+    wtpChart.data.datasets[0].data = wtpValues;
+    wtpChart.data.datasets[0].backgroundColor = barColors;
+    wtpChart.data.datasets[0].borderColor = borderColors;
+    wtpChart.update();
+}
+
 // Function to download program package as a text file
 function downloadPackage() {
     const packageList = document.getElementById('packageList').innerText;
@@ -269,7 +341,7 @@ function downloadPackage() {
     URL.revokeObjectURL(url);
 }
 
-// Function to download the chart as an image
+// Function to download the Uptake Probability chart as an image
 function downloadChart() {
     const canvas = document.getElementById('probabilityChart');
     const link = document.createElement('a');
@@ -300,6 +372,43 @@ function downloadWTP() {
     a.href = encodedUri;
     a.download = 'WTP_Table.csv';
     a.click();
+}
+
+// Function to download WTP notes as a text file
+function downloadNotes() {
+    // Fetch WTP values from the table
+    const wtpRows = document.querySelectorAll('#wtpTable tbody tr');
+    let wtpValues = {};
+    wtpRows.forEach(row => {
+        const feature = row.cells[0].innerText;
+        const wtp = parseFloat(row.cells[1].innerText);
+        wtpValues[feature] = wtp;
+    });
+
+    // Extract specific WTP values
+    const commWTP = wtpValues["Community Engagement"] || 0;
+    const psychWTP = wtpValues["Psychological Counselling"] || 0;
+    const vrWTP = wtpValues["Virtual Reality"] || 0;
+
+    // Construct the notes with actual WTP values
+    let notes = `
+Willingness-to-Pay (WTP) Analysis:
+
+Willingness-to-Pay (WTP) is calculated as the negative ratio of the attribute coefficient to the cost coefficient. It represents the monetary value participants assign to changes in support program features.
+
+For instance, the WTP for Community Engagement compared to the baseline (peer-support) was approximately AUD ${commWTP.toFixed(2)}, which means that participants on average are willing to pay AUD ${commWTP.toFixed(2)} more per session compared to the baseline peer support programs. This indicates a strong preference for programs that facilitate structured social interactions within the community, suggesting the importance of strengthening community ties and providing diverse social opportunities for older adults.
+
+In contrast, Psychological Counselling and Virtual Reality (VR) programs elicited negative WTP estimates of AUD ${psychWTP.toFixed(2)} and AUD ${vrWTP.toFixed(2)}, respectively. These negative values suggest that participants perceive Psychological Counselling as less desirable than peer support, potentially due to stigma or perceived effectiveness. The significantly negative valuation of VR programs may reflect discomfort with technology, perceived lack of personal interaction, or skepticism about the efficacy of virtual interventions in mitigating loneliness.
+    `;
+
+    // Create a blob from the notes
+    const blob = new Blob([notes], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'WTP_Notes.txt';
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
 // Add event listeners to Duration fields to enforce selection constraints
