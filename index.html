@@ -15,6 +15,11 @@
     <div class="container">
         <h1>AussieConnect Plus Decision Aid Tool</h1>
         
+        <!-- Introduction Section -->
+        <div class="introduction">
+            <p>Loneliness affects over five million Australians, particularly older adults, and is associated with significant adverse health and economic outcomes. This tool is developed based on a discrete choice experiment that evaluated preferences for various support interventions designed to reduce loneliness among older Australians. The objective of the DCE was to quantify the relative importance of factors older people consider when deciding to seek support services to be socially connected in Australia and to estimate the probability of older adults’ uptake of different support interventions in response to alternative support policy scenarios that aim to support older adults in Australia.</p>
+        </div>
+        
         <!-- Instructions Section -->
         <div class="instructions">
             <h2>How to Use This Tool</h2>
@@ -22,8 +27,8 @@
             <ol>
                 <li>Select your preferences from the drop-down menus provided.</li>
                 <li>Click the <strong>"Calculate Probability"</strong> button to see your results.</li>
-                <li>Review the predicted probability, program package, and insights provided.</li>
-                <li>Download your selected program package and chart for future reference.</li>
+                <li>Review the predicted probability and your selected program package.</li>
+                <li>Download your selected program package and Uptake Probability chart for future reference.</li>
             </ol>
             <p>These support programs are essential in fostering community engagement and enhancing the well-being of our senior population.</p>
         </div>
@@ -123,9 +128,9 @@
         <!-- Display Predicted Probability -->
         <div id="result">
             <h2>Predicted Probability of Program Uptake: <span id="probability">--</span></h2>
-            <!-- Notes Section -->
-            <div id="notes">
-                <!-- Dynamic notes will appear here -->
+            <!-- Brief Interpretations -->
+            <div id="interpretations">
+                <!-- Dynamic interpretations will appear here -->
             </div>
             <!-- Program Package Display -->
             <div id="programPackage">
@@ -134,30 +139,23 @@
                     <!-- Selected attributes will be listed here -->
                 </ul>
                 <button id="downloadPackageBtn" onclick="downloadPackage()">Download Program Package</button>
-                <button id="downloadChartBtn" onclick="downloadChart()">Download Chart</button>
-            </div>
-            <!-- WTP Section -->
-            <div id="wtpSection">
-                <h3>Willingness To Pay (WTP) for Program Features:</h3>
-                <canvas id="wtpChart"></canvas>
-                <table id="wtpTable">
-                    <thead>
-                        <tr>
-                            <th>Program Feature</th>
-                            <th>WTP (AUD)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- WTP values will be populated here -->
-                    </tbody>
-                </table>
-                <button id="downloadWtpBtn" onclick="downloadWTP()">Download WTP Table</button>
+                <button id="downloadChartBtn" onclick="downloadChart()">Download Uptake Probability Chart</button>
             </div>
         </div>
 
         <!-- Chart Container -->
         <div class="chart-container">
             <canvas id="probabilityChart"></canvas>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="feedback">
+            <h3>Feedback</h3>
+            <form id="feedbackForm">
+                <label for="feedback">Your Feedback:</label>
+                <textarea id="feedback" name="feedback" rows="4" placeholder="Enter your feedback here..."></textarea>
+                <button type="submit">Submit Feedback</button>
+            </form>
         </div>
     </div>
 
